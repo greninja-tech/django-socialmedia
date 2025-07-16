@@ -1,0 +1,72 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Posts</h2>
+
+    {% for post in posts %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+
+                <p>
+                    <a href="{% url 'profile' post.user.id %}">
+                        <strong>{{ post.user.first_name }} {{ post.user.last_name }}</strong>
+                    </a> posted:
+                </p>
+
+                <h4 class="card-title">{{ post.title }}</h4>
+                <p class="card-text">{{ post.content }}</p>
+
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" class="img-fluid rounded my-2" style="max-height: 300px;">
+                {% endif %}
+
+                <div class="d-flex align-items-center mt-2">
+                    <!-- Like Button -->
+                    <form method="POST" action="{% url 'like_post' post.id %}" class="me-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            {% if user in post.likes.all %}
+                                ❤️ Unlike
+                            {% else %}
+                                🤍 Like
+                            {% endif %}
+                        </button>
+                    </form>
+
+                    <!-- Like/Comment Count -->
+                    <span class="badge bg-primary me-2">{{ post.likes.count }} Likes</span>
+                    <span class="badge bg-secondary">{{ post.comments.count }} Comments</span>
+                </div>
+
+                <!-- Comments -->
+                <div class="mt-4">
+                    <h6 class="text-muted">Comments:</h6>
+                    {% for comment in post.comments.all %}
+                        <div class="border rounded p-2 mb-2">
+                            <a href="{% url 'profile' comment.user.id %}">
+                                <strong>{{ comment.user.first_name }}</strong>
+                            </a>: {{ comment.content }}
+                            <div class="text-muted small">{{ comment.created_at|date:"M d, Y H:i" }}</div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No comments yet.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Add Comment -->
+                <form method="POST" action="{% url 'add_comment' post.id %}" class="mt-3">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="content" class="form-control" placeholder="Add a comment..." required>
+                        <button class="btn btn-outline-success" type="submit">Post</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">You haven’t posted anything yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

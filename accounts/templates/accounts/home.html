@@ -1,0 +1,64 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold">Welcome to SocialMedia</h1>
+        <p class="lead text-muted">Your space to express, connect, and grow.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title">🔐 Register & Login</h4>
+                    <p class="card-text">
+                        Start by creating your free account. Use your email to register. Once you're in, you can explore posts, follow others, and create your own content.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title">📝 Create & Share Posts</h4>
+                    <p class="card-text">
+                        Share your thoughts, stories, or updates using the <strong>Add Post</strong> feature. Posts support text (and optionally images or links later).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title">👥 Follow Users</h4>
+                    <p class="card-text">
+                        Follow your friends or favorite users to stay updated with their latest posts. The more you follow, the richer your feed becomes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title">❤️ Like & Comment</h4>
+                    <p class="card-text">
+                        Show appreciation by liking posts and engaging with others through comments. Build your presence in the community.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 me-2">Get Started</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+        {% else %}
+        <a href="{% url 'add_post' %}" class="btn btn-success btn-lg px-4">Create Your First Post</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
